@@ -68,6 +68,8 @@ def write_data():
 def vmist_notes():
     name = listNotes.selectedItems()[0].text()
     textEdit.setText(notes[name]["вміст"])
+    listTag.clear()
+    listTag.addItems(notes[name]["теги"])
 
 
 listNotes.itemClicked.connect(vmist_notes)
@@ -107,6 +109,33 @@ def del_note():
 
 
 deleteBtn.clicked.connect(del_note)
+
+
+def add_tag():
+    name = listNotes.selectedItems()[0].text()
+    tag = lineEdit.text()
+    notes[name]["теги"].append(tag)
+    listTag.clear()
+    listTag.addItems(notes[name]["теги"])
+
+    write_data()
+
+
+addBtn.clicked.connect(add_tag)
+
+
+def del_tag():
+    name_note = listNotes.selectedItems()[0].text()
+    name_tag = listTag.selectedItems()[0].text()
+    notes[name_note]["теги"].remove(name_tag)
+    listTag.clear()
+    listTag.addItems(notes[name_note]["теги"])
+
+    write_data()
+
+
+vidkripBtn.clicked.connect(del_tag)
+
 
 window.show()
 app.exec()
