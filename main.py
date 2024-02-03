@@ -89,9 +89,24 @@ def add_note():
             "вміст": "",
             "теги": []
         }
+        listNotes.clear()
+        listNotes.addItems(notes)
         write_data()
 
 
 createBtn.clicked.connect(add_note)
+
+
+def del_note():
+    res, ok = QInputDialog.getText(window, "Введення", "Введіть назву замітки")
+    if ok:
+        notes.pop(res)
+        listNotes.clear()
+        listNotes.addItems(notes)
+        write_data()
+
+
+deleteBtn.clicked.connect(del_note)
+
 window.show()
 app.exec()
