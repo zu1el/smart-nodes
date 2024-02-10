@@ -2,9 +2,16 @@ import json
 
 from PyQt6.QtWidgets import *
 
+
+
 notes = {}
 
 app = QApplication([])
+app.setStyleSheet("""
+    QWidget {
+        background-color: #33333b 
+    }
+""")
 window = QWidget()
 window.setWindowTitle("Розумні замітки")
 window.resize(900, 600)
@@ -17,7 +24,7 @@ deleteBtn = QPushButton("Видалити замітку")
 changeBtn = QPushButton("Змінити замітку")
 addBtn = QPushButton("Додати до замітки")
 vidkripBtn = QPushButton("Відкріпити від замітки")
-poshukBtn = QPushButton("Пошук за тегом")
+poshukBtn = QPushButton("Шукати замітки за тегом")
 
 text2 = QLabel("Список тегів")
 listTag = QListWidget()
@@ -135,6 +142,36 @@ def del_tag():
 
 
 vidkripBtn.clicked.connect(del_tag)
+
+
+def apply_search_tag(tag):
+    notes_filtered = {}
+    for note, value in notes.items():
+        if tag in value["теги"]:
+            notes_filtered[note] = value
+
+    poshukBtn.setText("Скинути пошук")
+    listTag.clear()
+    listNotes.clear()
+    listNotes.addItems(notes_filtered)
+
+
+def clear_search():
+    listNotes.clear()
+    listNotes.addItems(notes)
+    poshukBtn.setText("Шукати замітки за тегом")
+
+
+def search_tag():
+    btn_text = poshukBtn.text()
+    tag = lineEdit.text()
+    if btn_text == "Шукати замітки за тегом":
+        apply_search_tag(tag)
+    if btn_text == "Скинути пошук":
+        clear_search()
+
+
+poshukBtn.clicked.connect(search_tag)
 
 
 window.show()
